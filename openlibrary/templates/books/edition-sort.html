@@ -1,5 +1,7 @@
 $def with (book)
 
+$ availability = book.get('availability', {})
+
 $ worldcat = "https://worldcat.org/isbn/XXX"
 $ worldcatoclc = "https://worldcat.org/oclc/XXX"
 
@@ -66,7 +68,7 @@ $ url = book.get_cover_url("S") or "/images/icons/avatar_book-sm.png"
         </div>
     </td>
 
-    $if 'printdisabled' in collection or 'lendinglibrary' in collection:
+    $if availability and availability.get('status') != 'error':
         <td class="icon read">
         <div class="bbbb"></div>
         <div class="links">
@@ -75,7 +77,7 @@ $ url = book.get_cover_url("S") or "/images/icons/avatar_book-sm.png"
             </ul>
         </div>
         </td>
-    $elif book.ocaid:
+    $elif availability.get('status') == 'open':
         <td class="icon read">
         <div class="aaaa"></div>
         <div class="links">
@@ -96,7 +98,7 @@ $ url = book.get_cover_url("S") or "/images/icons/avatar_book-sm.png"
         </div>
         </td>
 
-    $if (isbn or oclc_numbers or 'lendinglibrary' in collection or library) and not private_collection_in(collection):
+    $if availability.get('status') in ['borrow_available', 'borrow_unavailable']:
         <td class="icon borrow">
             <div class="aaaa"></div>
             <div class="links">

@@ -92,7 +92,8 @@ $ book_keys = []
     </thead>
     <tbody>
         $ edition_list_start = time()
-        $for book in page.get_sorted_editions():
+        $ editions = page.get_sorted_editions()
+        $for book in editions:
             $ book_keys.append(book['key'].replace('/books/', ''))
             <tr>$:render_template("books/edition-sort", book)</tr>
         $ edition_list_secs = time() - edition_list_start
